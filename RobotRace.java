@@ -5,6 +5,8 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.gl2.GLUT;
 
+import java.util.Random;
+
 import static com.jogamp.opengl.GL2.*;
 import static robotrace.ShaderPrograms.*;
 import static robotrace.Textures.*;
@@ -76,11 +78,31 @@ public class RobotRace extends Base {
     /** Instance of the terrain. */
     private final Terrain terrain;
 
+    // Create trees
+    private final Tree[] trees;
+    Random rand = new Random();
+    // The number of trees that will be drawn; between 3 and 8
+    int  treeCount = rand.nextInt(5) + 3;
+
     /**
      * Constructs this robot race by initializing robots,
      * camera, track, and terrain.
      */
     public RobotRace() {
+        Random rand = new Random();
+        trees = new Tree[treeCount];
+        for (int i = 0; i < treeCount; i++){
+            // Number of body parts each tree will have, between 3 and 8
+            int numberOfBodyParts = rand.nextInt(5) + 3;
+            // The size of a tree, between 2 and 8
+            int  treeSize = rand.nextInt(6) + 2;
+            // Generate the coordinates for each tree, such that they are insine the track circle
+            double  randomX = rand.nextInt(15) - 7.5;
+            double  randomY = rand.nextInt(15) - 7.5;
+            trees[i] = new Tree(treeSize, 30, randomX, randomY, numberOfBodyParts);
+        }
+
+
 
         // Create a new array of four robots
         robots = new Robot[4];
@@ -277,6 +299,10 @@ public class RobotRace extends Base {
         if (gs.showAxes) {
             drawAxisFrame();
         }
+        // Draw all the trees
+        for (int i = 0; i < treeCount; i++){
+            trees[i].drawTree(gl, glut);
+        }
 
         //assign material to track
         gl.glMaterialfv(GL_FRONT, GL_DIFFUSE, Material.WOOD.diffuse, 0);
@@ -292,7 +318,7 @@ public class RobotRace extends Base {
         reportError("terrain:");
 
 
-        // Draw the robots
+        // Draw the robots, each with  different movement speed
         gl.glUseProgram(robotShader.getProgramID());
         double t;
         for(int i = 0; i < 4; i++){
@@ -301,6 +327,7 @@ public class RobotRace extends Base {
             robots[i].direction = raceTracks[gs.trackNr].getLaneTangent(i + 1, t);
             robots[i].draw(gl, glu, glut, gs.tAnim);
         }
+
 
     }
 

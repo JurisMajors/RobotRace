@@ -10,7 +10,7 @@ public enum Material {
      * Modify the default values to make it look like gold.
      */
     GOLD (
-
+            // RGB for dark goldish color
             new float[] {0.83f, 0.69f, 0.22f, 1},
             new float[] {0.83f, 0.69f, 0.22f, 1},
             30
@@ -22,7 +22,7 @@ public enum Material {
      * Modify the default values to make it look like silver.
      */
     SILVER (
-
+            // RGB for silver
             new float[] {0.75f, 0.75f, 0.75f, 1},
             new float[] {0.75f, 0.75f, 0.75f, 1},
             60
@@ -34,7 +34,7 @@ public enum Material {
      * Modify the default values to make it look like orange.
      */
     ORANGE (
-
+            // RGB for orange
             new float[] {1, 0.45f, 0, 1},
             new float[] {1, 0.45f, 0, 1},
             100
@@ -46,7 +46,7 @@ public enum Material {
      * Modify the default values to make it look like Wood.
      */
     WOOD (
-
+            // RGB for wood
             new float[] {0.63f, 0.33f, 0.18f, 1},
             new float[] {0.63f, 0.33f, 0.18f, 1},
             100
