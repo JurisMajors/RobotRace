@@ -43,7 +43,7 @@ public class BezierTrack extends RaceTrack {
     Vector getCubicBezierTng(double t, Vector P0, Vector P1,
                              Vector P2, Vector P3){
 
-        // derivative of poinr
+        // derivative of point
         return P0.scale(-3 * Math.pow(1 - t, 2))
                 .add(P1.scale(3 * Math.pow(1 - t, 2) - 6 * t * (1 - t)))
                 .add(P2.scale(-3 * Math.pow(t, 2) + 6 * t * (1 - t)))

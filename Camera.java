@@ -44,6 +44,7 @@ class Camera {
         x = cos(gs.phi) * cos(-gs.theta) * gs.vDist; // project to XY plane(cos(phi)) -> project to X plane(cos(-theta))
         y = cos(gs.phi) * sin(-gs.theta) * gs.vDist; // project to XY plane(cos(phi)) -> project to Y plane
         z = sin(gs.phi) * gs.vDist; // project to Z plane
+        up = Vector.Z;
         eye = new Vector(x,y,z);
 
     }
@@ -57,6 +58,7 @@ class Camera {
         center = focus.position.add(focus.direction);
         // Add the point which the camera is looking at to the position of camera
         eye = focus.position.add(Vector.O);
+        up = Vector.Z;
         // Move camera to head (otherwise we are at feet)
         double headLocation = 1.1;
         eye.z += headLocation;

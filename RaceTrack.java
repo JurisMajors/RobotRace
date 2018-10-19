@@ -45,7 +45,7 @@ abstract class RaceTrack {
             t = 0; // reset t for each iteration
             vertex_counter = 0;
             Vector p1, p2, tan1, tan2;
-            while(t < 1. + precision) {
+            while(t < 1. + precision ) {
                 p1 = getPoint(t); // start of two lanes
                 p2 = getPoint(t); // end of two lanes
 
