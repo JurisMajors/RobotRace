@@ -2,6 +2,7 @@ varying vec3 p;
 void main()
 {
     vec4 c = vec4(vec3(0.), 1);
+    // set colors according to the requirements on pdf
     if(p.z <= 0){
         c += vec4(0, 0, 255, 0);
     } else if(p.z < 0.5) {

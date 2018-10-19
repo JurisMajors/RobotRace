@@ -20,8 +20,8 @@ public class BezierTrack extends RaceTrack {
     @Override
     protected Vector getPoint(double t) {
         t %= 1; // since t can be >1 (i.e. 1.00000000004) because its a double, safety
-        int current_segment = (int) (t/ length_segments); // which segment in the distance(t) from 0 to 1 we are drawing
-        t = t/length_segments - current_segment ; // (double)segment - floor(segment) := 0 to 1 fraction of drawing that segment
+        int current_segment = (int) (t * nr_segments); // which segment in the distance(t) from 0 to 1 we are drawing
+        t = t*nr_segments % 1; // (double)segment - floor(segment) := 0 to 1 fraction of drawing that segment
 
         // get the control points for that particular segment
         Vector P0 = controlPoints[4 * current_segment];
