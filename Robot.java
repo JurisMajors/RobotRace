@@ -23,6 +23,7 @@ class Robot {
 
     // Size of robot
     double robotSize;
+    // Animation speed of arms and legs and head
     double robotAnimationSpeed = 3;
     /**
      * Constructs the robot with initial parameters.
@@ -36,14 +37,14 @@ class Robot {
     }
 
     public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim) {
-        // Place the starting point
+        // Set materials
         gl.glPushMatrix();
         gl.glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material.diffuse, 0);
         gl.glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material.specular, 0);
         gl.glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess);
         // Rotate the robot according to tangent
         double rotation = Math.toDegrees(Math.acos(Vector.X.dot(direction)));
-        // Check if negative, if it is, then change rotation
+        // Check if negative, if it is, then change rotation, so we have 360 degrees
         if(Vector.X.cross(direction).z <= 0){
             rotation = -rotation;
         }
@@ -51,6 +52,7 @@ class Robot {
         gl.glTranslated(position.x, position.y, position.z);
         gl.glRotated(rotation, 0,0,1);
         gl.glRotated(90, 0,0,1);
+        // Move so that the robot is on the track
         gl.glTranslated(0, 0, -robotSize*1.15);
         // Draws head
         drawHead(gl, glu, glut, tAnim);
@@ -93,46 +95,48 @@ class Robot {
 
     }
 
-    public void drawArm(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean arm) {
+    public void drawArm(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean whichArm) {
         // Draw the rotation point, then draw upper arm
         gl.glPushMatrix();
-        if(arm == false){
+        // If statement for x coordinates, so we can draw both arms
+        if(whichArm == false){
             gl.glTranslated(robotSize/4.6, 0, (1.97*robotSize));
+            // Rotation angle
             gl.glRotated((Math.abs(Math.sin(tAnim*robotAnimationSpeed))*60)-35, 1, 0, 0);
         }else{
             gl.glTranslated(-robotSize/4.6, 0, (1.97*robotSize));
             gl.glRotated((Math.abs(Math.cos(tAnim*robotAnimationSpeed))*60)-35, 1, 0, 0);
         }
+        // Draw a rotation point for arm, which rotates according to the rotatation angle
         glut.glutSolidSphere(0.01,10,10);
-        drawUpperArm(gl, glu, glut, tAnim, arm);
+        drawUpperArm(gl, glu, glut, tAnim, whichArm);
         gl.glPopMatrix();
 
     }
 
-    public void drawUpperArm(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean arm){
+    public void drawUpperArm(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean whichArm){
         gl.glPushMatrix();
-        // Check which arm and adjust x coordinates
+        // Draw upper arm and then call to draw lower arm
         gl.glTranslated(0, 0, -robotSize/10);
         gl.glScaled(robotSize/10, robotSize/10, robotSize/4);
         glut.glutSolidCube(1);
         drawLowerArm(gl, glu, glut, tAnim, true);
         gl.glScaled(1/(robotSize/10), 1/(robotSize/10), 1/(robotSize/4));
-        drawLowerArm(gl, glu, glut, tAnim, arm);
+        drawLowerArm(gl, glu, glut, tAnim, whichArm);
         gl.glPopMatrix();
 
     }
 
-    public void drawLowerArm(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean arm){
+    public void drawLowerArm(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean whichArm){
         // Place rotation point for lower arm, then draw it
         gl.glPushMatrix();
         gl.glTranslated(0, 0, -(robotSize/8));
-        if(arm == true){
+        if(whichArm == true){
             gl.glRotated((Math.abs(Math.cos(tAnim*robotAnimationSpeed))*90)-70, 1, 0, 0);
         }else{
             gl.glRotated((Math.abs(Math.sin(tAnim*robotAnimationSpeed))*90)-70, 1, 0, 0);
         }
         glut.glutSolidSphere(robotSize/20,10,10);
-        // Check which arm and adjust x coordinates
         gl.glTranslated(0, 0, -(robotSize/8));
         gl.glScaled(robotSize/13, robotSize/13, robotSize/5);
         glut.glutSolidCube(1);
@@ -140,7 +144,7 @@ class Robot {
     }
 
     public void drawLeg(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean leg) {
-        // Draw the rotation point, then draw upper leg
+        // Draw the rotation point for legs, then draw upper leg
         gl.glPushMatrix();
         if(leg == false){
             gl.glTranslated(robotSize/10, 0, (1.53* robotSize));
@@ -157,7 +161,7 @@ class Robot {
 
     public void drawUpperLeg(GL2 gl, GLU glu, GLUT glut, float tAnim, boolean leg){
         gl.glPushMatrix();
-        // Check which leg and adjust x coordinates
+        // Draw upper leg
         gl.glTranslated(0, 0, -(1.525* robotSize -1.46* robotSize));
         gl.glScaled(robotSize/9, robotSize/9, robotSize/3.5);
         glut.glutSolidCube(1);
@@ -178,7 +182,6 @@ class Robot {
             gl.glRotated((Math.abs(Math.cos(tAnim*robotAnimationSpeed))*60)-20, 1, 0, 0);
         }
         glut.glutSolidSphere(0.05,10,10);
-        // Check which arm and adjust x coordinates
         gl.glTranslated(0, 0, -(robotSize/9));
         gl.glScaled(robotSize/12, robotSize/12, robotSize/5);
         glut.glutSolidCube(1);
